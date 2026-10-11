@@ -37,10 +37,6 @@ function ESP_Utils.Box3D(object, destroyConnection)
 
     local function Updater()
 
-        destroyConnection:Once(function()
-            for _,quad in quads do quad:Destroy() end
-        end)
-
         local connection;
         connection = RunService.RenderStepped:Connect(function(Deltatime: number)
             if object == nil then
@@ -113,7 +109,25 @@ function ESP_Utils.Box3D(object, destroyConnection)
             end;
 
         end);
+
+        local connection2 = destroyConnection:Once(function()
+            for _,quad in quads do quad:Destroy() end
+            connection:Disconnect()
+        end)
+
+        return {
+            Destroy = function()
+                for _,quad in quads do
+                    quad:Destroy()
+                    connection:Disconnect()
+                    connection2:Disconnect()
+                end
+            end
+        }
     end;
+
+
+    return Updater()
 end;
 
 return ESP_Utils;
