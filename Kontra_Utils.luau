@@ -1,4 +1,5 @@
-local ThirdPartyUserService = game:GetService("ThirdPartyUserService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 local Utils = {}
 
 function Utils.getLocalPlayerTeam(
@@ -21,10 +22,40 @@ function Utils.getCharacterTeam(
     return "Spectator"
 end
 
+function Utils.getSounds(): {Part}
+
+    local Debris = workspace:FindFirstChild("Debris")
+    if not Debris then return {} end
+
+    local Sounds = Debris:FindFirstChild("Sounds")
+    if not Sounds then return {} end
+
+    return Sounds:GetChildren()
+end
+
+function Utils.getAudibleSounds(sounds: {Part}): {Part}
+    local Listener = workspace.CurrentCamera:FindFirstChild("SoundManagerListener")
+    if not Listener then return {} end
+
+    local audibleSounds = {}
+
+    for _,sfx in sounds do
+        local emitter: AudioEmitter = sfx:FindFirstChild("AudioEmitter")
+        if not emitter then continue end
+
+        if emitter:GetAudibilityFor(Listener) then
+            table.insert(audibleSounds, sfx)
+        end
+    end
+
+    return audibleSounds
+end
+
 function Utils.isRagdoll(
     Character: Model
 ): boolean
     if Character == nil then return false end
+    if Character.Parent == nil then return true end
 
     if Character.Parent.Name == "Ragdolls" then
         return true
@@ -90,6 +121,30 @@ function Utils.bombPosition(): Vector3
     if ActualBomb == nil then return Vector3.zero end
 
     return ActualBomb.Handle.Position
+end
+
+function Utils.GetGameState(): {[string]: any}
+
+    local GameStats = ReplicatedStorage:FindFirstChild("GameStats")
+    if not GameStats then return {} end
+
+    local currentState = {}
+
+    for _,state in {
+        "BuyTime",
+        "CanBuy",
+        "Gamemode",
+        "Map",
+        "PreparationEndTick",
+        "ServerRegion",
+        "State",
+        "Time",
+    } do
+        currentState[state] = GameStats:GetAttribute(state)
+    end
+
+    return currentState
+
 end
 
 return Utils
