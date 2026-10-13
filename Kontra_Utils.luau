@@ -2,6 +2,63 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Utils = {}
 
+function Utils.getSoundList(): {[string]: {Group: string, CleanName: string}}
+
+    return {
+        ["Footsteps.ConcreteCt"] = { Group = "Footstep", CleanName = "Concrete Footstep" },
+        ["Footsteps.LandConcrete"] = { Group = "Footstep", CleanName = "Concrete Landing Footstep" },
+        ["Impacts.Body.BodyImpactCt"] = { Group = "BodyImpact", CleanName = "Body Impact" },
+        ["Impacts.Body.BodyImpactTSoft"] = { Group = "BodyImpact", CleanName = "Body Impact" },
+        ["Impacts.Body.BodyMediumImpactSoft"] = { Group = "BodyImpact", CleanName = "Body Impact" },
+        ["Impacts.Cardboard.CardboardBoxImpactBullet"] = { Group = "BulletImpact", CleanName = "Bullet Impact" },
+        ["Impacts.Concrete.ConcreteImpactBullet"] = { Group = "BulletImpact", CleanName = "Bullet Impact" },
+        ["Impacts.Concrete.ConcreteImpactHard"] = { Group = "HardImpact", CleanName = "Hard Impact" },
+        ["Impacts.Concrete.ConcreteImpactSoft"] = { Group = "SoftImpact", CleanName = "Soft Impact" },
+        ["Impacts.Glass.GlassImpactBullet"] = { Group = "BulletImpact", CleanName = "Bullet Impact" },
+        ["Impacts.Metal.MetalBoxImpactBullet"] = { Group = "BulletImpact", CleanName = "Bullet Impact" },
+        ["Impacts.Metal.MetalSolidImpactBullet"] = { Group = "BulletImpact", CleanName = "Bullet Impact" },
+        ["Impacts.Rubber.RubberTireImpactBullet"] = { Group = "BulletImpact", CleanName = "Bullet Impact" },
+        ["Impacts.Surfaces.DefaultImpactBullet"] = { Group = "BulletImpact", CleanName = "Bullet Impact" },
+        ["Impacts.Weapon.WeaponC4Impact"] = { Group = "WeaponImpact", CleanName = "Weapon Impact" },
+        ["Impacts.Weapon.WeaponRifleImpact"] = { Group = "WeaponImpact", CleanName = "Weapon Impact" },
+        ["Items.pickup-ammo"] = { Group = "ItemPickup", CleanName = "Ammo Pickup" },
+        ["Items.pickup-weapon"] = { Group = "ItemPickup", CleanName = "Weapon Pickup" },
+        ["Misc.Death"] = { Group = "Death", CleanName = "Player Death" },
+        ["Misc.HeadshotArmorE"] = { Group = "Headshot", CleanName = "Armored Headshot" },
+        ["Misc.HeadshotArmorFlesh"] = { Group = "Headshot", CleanName = "Flesh Headshot" },
+        ["Misc.Land"] = { Group = "Landing", CleanName = "Landing" },
+        ["Other.Debris"] = { Group = "Debris", CleanName = "Debris" },
+        ["Weapons.AK-47.Fire"] = { Group = "WeaponFire", CleanName = "AK-47 Fire" },
+        ["Weapons.AWP.Fire"] = { Group = "WeaponFire", CleanName = "AWP Fire" },
+        ["Weapons.Desert Eagle.Fire"] = { Group = "WeaponFire", CleanName = "Desert Eagle Fire" },
+        ["Weapons.M4A4.Fire"] = { Group = "WeaponFire", CleanName = "M4A4 Fire" },
+        ["Weapons.MAC-10.Fire"] = { Group = "WeaponFire", CleanName = "MAC-10 Fire" },
+    }
+
+end
+
+function Utils.getSoundGroup(SoundName: string): string
+    local soundDict = Utils.getSoundList()
+
+    if not soundDict[SoundName] then
+        warn(SoundName, "was passed however there is no entry.")
+        return "Unknown"
+    end
+
+    return soundDict[SoundName].Group
+end
+
+function Utils.cleanSoundName(SoundName: string): string
+    local soundDict = Utils.getSoundList()
+
+    if not soundDict[SoundName] then
+        warn(SoundName, "was passed however there is no entry.")
+        return "Unknown"
+    end
+
+    return soundDict[SoundName].CleanName
+end
+
 function Utils.getLocalPlayerTeam(
     LocalPlayer: Player
 ): string
