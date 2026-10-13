@@ -22,7 +22,7 @@ function ESP_Utils.Colorize(color, lib)
     end;
 end;
 
-function ESP_Utils.Box3D(object, destroyConnection)
+function ESP_Utils.Box3D(object, onFrame, destroyConnection)
     local Camera = workspace.CurrentCamera;
     local Part = object;
 
@@ -108,6 +108,8 @@ function ESP_Utils.Box3D(object, destroyConnection)
                 end
             end;
 
+            onFrame(quads)
+
         end);
 
         local connection2 = destroyConnection:Once(function()
@@ -116,6 +118,7 @@ function ESP_Utils.Box3D(object, destroyConnection)
         end)
 
         return {
+            quads = quads,
             Destroy = function()
                 for _,quad in quads do
                     quad:Destroy()
