@@ -112,6 +112,8 @@ function ESP_Utils.Box3D(object, onFrame, destroyConnection)
 
         end);
 
+        if not destroyConnection then destroyConnection = object.Destroying end
+
         local connection2 = destroyConnection:Once(function()
             for _,quad in quads do quad:Destroy() end
             connection:Disconnect()
